@@ -1,2 +1,1 @@
 # openweathermap-resource-
-# openweathermap
