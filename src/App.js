@@ -118,7 +118,6 @@ class App extends Component {
     const cities = this.state.citiesFilter;
     const currentWeather = this.state.currentWeather;
     const active = this.state.active;
-    console.log(weatheres);
     let background = "";
     if (weatheres) {
       switch (weatheres.list[currentWeather].weather[0].main) {
@@ -148,7 +147,7 @@ class App extends Component {
           break;
         case "Clear":
           if (weatheres.list[currentWeather].sunset * 1000 > Date.now()) {
-            background = "skyclear.jpg";
+            background = "sunny.jpg";
           } else {
             background = "skynight.jpg";
           }
@@ -162,7 +161,9 @@ class App extends Component {
         className={css`
           text-align: center;
           height: 100%;
-          background-image: url("${this.props.location.pathname}Image/${background}");
+          background-image: url("${this.props.location.pathname}Image/${
+          background ? "sunny.jpg" : ""
+        }");
           background-position: left;
           background-repeat: no-repeat;
           background-size: cover;
