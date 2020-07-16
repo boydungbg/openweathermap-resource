@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from "react";
@@ -10,6 +11,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
+import { css } from "emotion";
 
 class App extends Component {
   constructor() {
@@ -22,6 +25,7 @@ class App extends Component {
       citiesFilter: "",
       active: [true],
     };
+    console.log(this.props);
     this.day = ["Sun", "Mon", "Tue", "Web", "Thu", "Fri", "Sat"];
     this.handlerOnclick = this.handlerOnclick.bind(this);
     this.getData = function (cityName = "hanoi") {
@@ -47,7 +51,9 @@ class App extends Component {
 
   async componentDidMount() {
     let data = await Promise.all([
-      fetch("/city.list.min.json").then((data) => data.json()),
+      fetch(this.props.location.pathname + "city.list.min.json").then((data) =>
+        data.json()
+      ),
       this.getData().then((res) => res.data),
     ]).then((res) => res);
     this.setState({
@@ -58,15 +64,14 @@ class App extends Component {
 
   async handlerOnclick(e) {
     e.preventDefault();
-    if (this.inputCityName.value) {
-      let weatheres = await this.getData(this.inputCityName.value)
-        .then((res) => res.data)
-        .catch((err) => console.log(err));
-      this.setState({
-        cityName: this.inputCityName.value,
-        weatheres: weatheres,
-      });
-    }
+    let weatheres = await this.getData(this.state.cityName)
+      .then((res) => res.data)
+      .catch((err) => console.log(err));
+    this.setState({
+      cityName: "",
+      weatheres: weatheres,
+      citiesFilter: [],
+    });
   }
 
   handlerOnclickActiveDay(dt, index) {
@@ -114,8 +119,55 @@ class App extends Component {
     const currentWeather = this.state.currentWeather;
     const active = this.state.active;
     console.log(weatheres);
+    let background = "";
+    if (weatheres) {
+      switch (weatheres.list[currentWeather].weather[0].main) {
+        case "Clouds":
+          if (
+            weatheres.list[currentWeather].weather[0].description ===
+              "few clouds" ||
+            weatheres.list[currentWeather].weather[0].description ===
+              "broken clouds" ||
+            weatheres.list[currentWeather].weather[0].description ===
+              "scattered clouds"
+          ) {
+            background = "fewClouds.jpeg";
+          } else {
+            background = "cloud.jpeg";
+          }
+          break;
+        case "Rain":
+          if (
+            weatheres.list[currentWeather].weather[0].description ===
+            "light rain"
+          ) {
+            background = "lightRain.jpg";
+          } else {
+            background = "ModerateRain.jpg";
+          }
+          break;
+        case "Clear":
+          if (weatheres.list[currentWeather].sunset * 1000 > Date.now()) {
+            background = "skyclear.jpg";
+          } else {
+            background = "skynight.jpg";
+          }
+          break;
+        default:
+          break;
+      }
+    }
     return (
-      <div className="bg-sunny">
+      <div
+        className={css`
+          text-align: center;
+          height: 100%;
+          background-image: url("${this.props.location.pathname}Image/${background}");
+          background-position: left;
+          background-repeat: no-repeat;
+          background-size: cover;
+        `}
+      >
         <div className="bg-sunny-background">
           <ul className="header">
             <li>
@@ -304,4 +356,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);
