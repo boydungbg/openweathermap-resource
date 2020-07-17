@@ -163,7 +163,7 @@
 .forecast-daily {
   display: flex;
   justify-content: flex-start;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: hidden;
   width: 100%;
   scroll-behavior: smooth;

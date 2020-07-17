@@ -85,20 +85,10 @@ class App extends Component {
     });
   }
 
-  handlerOnSearchCity(e) {
-    var cities = [];
-    if (e.target.value) {
-      let stringReg = `^${e.target.value.toLowerCase()}`;
-      const regex = new RegExp(stringReg);
-      cities = this.state.cities.filter(({ name, country }) => {
-        return (name + "," + country).toLowerCase().match(regex);
-      });
-    }
-    this.setState({
-      citiesFilter: cities.splice(0, 10),
-      cityName: e.target.value,
-    });
+  async handlerOnSearchCity(e) {
+    console.log(e);
   }
+
   async onClickCitiSearch(city) {
     if (city) {
       let weatheres = await this.getData(city)
@@ -118,7 +108,7 @@ class App extends Component {
     const cities = this.state.citiesFilter;
     const currentWeather = this.state.currentWeather;
     const active = this.state.active;
-    let background = "";
+    let background = "sunny.jpg";
     if (weatheres) {
       switch (weatheres.list[currentWeather].weather[0].main) {
         case "Clouds":
@@ -161,9 +151,7 @@ class App extends Component {
         className={css`
           text-align: center;
           height: 100%;
-          background-image: url("${this.props.location.pathname}Image/${
-          background ? "sunny.jpg" : ""
-        }");
+          background-image: url("${this.props.location.pathname}Image/${background}");
           background-position: left;
           background-repeat: no-repeat;
           background-size: cover;
@@ -177,7 +165,7 @@ class App extends Component {
                   placeholder="Search"
                   type="search"
                   value={cityName}
-                  onChange={this.handlerOnSearchCity}
+                  onKeyUp={this.handlerOnSearchCity}
                 />
                 <button onClick={this.handlerOnclick}>
                   <FontAwesomeIcon icon={faSearch} />
