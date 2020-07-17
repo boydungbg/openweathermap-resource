@@ -252,7 +252,7 @@
     margin-left: 2rem;
   }
 }
-@media only screen and (max-width: 330px) {
+@media only screen and (max-width: 420px) {
   .weather-detail-1 .content {
     font-size: 0.9rem;
     padding-right: 1rem;
@@ -261,5 +261,17 @@
   .title {
     position: relative;
     margin-left: 2rem;
+  }
+  .forecast-daily {
+    display: flex;
+    justify-content: flex-start;
+    overflow: auto;
+    width: 100%;
+    scroll-behavior: smooth;
+    margin-left: 2.2rem;
+    margin-right: 2.2rem;
+  }
+  .icon-scroll {
+    display: none;
   }
 }

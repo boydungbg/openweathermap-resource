@@ -118,7 +118,7 @@ class App extends Component {
     const cities = this.state.citiesFilter;
     const currentWeather = this.state.currentWeather;
     const active = this.state.active;
-    let background = "";
+    let background = "sunny.jpg";
     if (weatheres) {
       switch (weatheres.list[currentWeather].weather[0].main) {
         case "Clouds":
@@ -161,9 +161,7 @@ class App extends Component {
         className={css`
           text-align: center;
           height: 100%;
-          background-image: url("${this.props.location.pathname}Image/${
-          background ? "sunny.jpg" : ""
-        }");
+          background-image: url("${this.props.location.pathname}Image/${background}");
           background-position: left;
           background-repeat: no-repeat;
           background-size: cover;
