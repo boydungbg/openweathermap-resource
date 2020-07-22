@@ -163,10 +163,15 @@
 .forecast-daily {
   display: flex;
   justify-content: flex-start;
-  overflow-x: hidden;
+  overflow-x: scroll;
   overflow-y: hidden;
   width: 100%;
   scroll-behavior: smooth;
+  scrollbar-color: red;
+}
+
+.forecast-daily::-webkit-scrollbar {
+  display: none;
 }
 .forecast-daily-day {
   margin-top: 1rem;
@@ -270,6 +275,7 @@
     scroll-behavior: smooth;
     margin-left: 2.2rem;
     margin-right: 2.2rem;
+    -webkit-overflow-scrolling: touch;
   }
   .icon-scroll {
     display: none;
